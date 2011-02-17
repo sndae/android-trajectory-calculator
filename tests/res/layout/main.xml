@@ -10,17 +10,15 @@
   android:layout_width="fill_parent"
   android:layout_height="wrap_content"
   android:text="Hi sweetie."/>
-  
+ 
+ <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/tGrav"
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:text="Hi sweetie."/> 
 
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
   android:id="@+id/tGyro"
-  android:layout_width="fill_parent"
-  android:layout_height="wrap_content"
-  android:text="Hi sweetie."/>
-  
-
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/tGrav"
   android:layout_width="fill_parent"
   android:layout_height="wrap_content"
   android:text="Hi sweetie."/>
@@ -30,5 +28,14 @@
   android:layout_width="fill_parent"
   android:layout_height="wrap_content"
   android:text="Hi sweetie."/>
+  
+  
+     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/tOrientation"
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:text="Orientation."/>
+  
+
 
 </LinearLayout>
