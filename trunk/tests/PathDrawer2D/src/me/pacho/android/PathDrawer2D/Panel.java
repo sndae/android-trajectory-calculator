@@ -9,7 +9,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 class Panel extends SurfaceView implements SurfaceHolder.Callback {
-	
 	private CanvasThread canvasthread;
 	private SensorGuy sensorGuy;
 	private int count=0;
@@ -54,29 +53,32 @@ class Panel extends SurfaceView implements SurfaceHolder.Callback {
     
     @Override
     public void onDraw(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setColor(Color.BLACK);
+
     	if(count==0){
-    		canvas.drawColor(Color.BLACK);
+    		canvas.drawRect(0,0,screenSize[0],screenSize[1],paint);
+
     	}
 
         screenSize[0]=canvas.getWidth();
         screenSize[1]=canvas.getHeight();
-        Paint paint = new Paint();
         //entre 5 y -5 m/s^2
-        float[] acceleration=sensorGuy.getAcceleration();//{3f,0f,-3f};//
+        float[] acceleration=sensorGuy.getNetAcceleration();//{3f,0f,-3f};//
         float scale=screenSize[1]/8;
         int zero=(int)(screenSize[1]*0.4);
       //x
         paint.setColor(Color.RED);
-        canvas.drawPoint(count, acceleration[0]*scale+zero, paint);
+        canvas.drawCircle(count, acceleration[0]*scale+zero,2f, paint);
       //y
         paint.setColor(Color.BLUE);
-        canvas.drawPoint(count, acceleration[1]*scale+zero, paint);
+        canvas.drawCircle(count, acceleration[1]*scale+zero,2f, paint);
       //z
         paint.setColor(Color.WHITE);
-        canvas.drawPoint(count, acceleration[2]*scale+zero, paint);
+        canvas.drawCircle(count, acceleration[2]*scale+zero,2f, paint);
         
         canvas.drawRect(0,0,screenSize[0],50, paint);
-        paint.setColor(Color.WHITE);
+        paint.setColor(Color.BLACK);
         canvas.drawText("Count: "+count, 5,20, paint);
         count++;
         if(count>screenSize[0]){
