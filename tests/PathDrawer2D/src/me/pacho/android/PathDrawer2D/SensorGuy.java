@@ -11,19 +11,20 @@ import android.util.Log;
 
 public class SensorGuy implements SensorEventListener{
 
-    private static final int WINDOW_SIZE = 2;
+    private static final int WINDOW_SIZE = 20;
     private Sensor mAccelerometer;
     private Sensor mGyroscope;
     private Sensor mGravity;
 	private SensorManager mSensorManager;
 
-    private ArrayList<float[]> hGravity=new ArrayList<float[]>();
     private ArrayList<float[]> hGyroscope=new ArrayList<float[]>();;
-    private ArrayList<float[]> hAcceleration=new ArrayList<float[]>();;
+    private ArrayList<float[]> hNetAcceleration=new ArrayList<float[]>();;
     
-    private float[] lastAveragedGravity=new float[3];
-    private float[] lastAveragedGyroscope=new float[3];
-    private float[] lastAveragedAcceleration=new float[3];
+    private float[] lastGravity=new float[3];
+    private float[] lastGyroscope=new float[3];
+    private float[] lastAveragedNetAcceleration=new float[3];
+    private float[] lastAcceleration=new float[3];
+    
     public SensorGuy(){
     	Drawer.getContext();
     	if(Drawer.getContext()==null){
@@ -50,10 +51,7 @@ public class SensorGuy implements SensorEventListener{
 	@Override
 	 public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
-        	hAcceleration.add(event.values);
-        	if(hAcceleration.size()>=WINDOW_SIZE){
-        		hAcceleration.remove(0);
-        	}
+        	lastAcceleration=event.values;
         	calculateNetAcceleration(event);
        	
         }
@@ -62,15 +60,12 @@ public class SensorGuy implements SensorEventListener{
         	if(hGyroscope.size()>=WINDOW_SIZE){
         		hGyroscope.remove(0);
         	}
-        	lastAveragedGyroscope=average(hGyroscope);
+        	lastGyroscope=average(hGyroscope);
 
         }
         else if (event.sensor.getType()== Sensor.TYPE_GRAVITY){
-           	hGravity.add(event.values);
-        	if(hGravity.size()>=WINDOW_SIZE){
-        		hGravity.remove(0);
-        	}
-        	lastAveragedGravity=average(hGravity);
+
+        	lastGravity=event.values;
 
         	calculateNetAcceleration(event);
         }
@@ -81,14 +76,18 @@ public class SensorGuy implements SensorEventListener{
 	
 	private void calculateNetAcceleration(SensorEvent event) {
     	//Usando el sensor de gravedad
+	    float[] lastNetAcceleration=new float[3];
 
-		if(hAcceleration.size()>=WINDOW_SIZE-1 && hGravity.size()>=WINDOW_SIZE-1){
-				float[] acceleration=average(hAcceleration);
-				float[] gravity=average(hGravity);
-				lastAveragedAcceleration[0]=acceleration[0]-gravity[0];
-				lastAveragedAcceleration[1]=acceleration[1]-gravity[1];
-				lastAveragedAcceleration[2]=acceleration[2]-gravity[2];
-
+		if(lastAcceleration!=null && lastGravity!=null){
+				lastNetAcceleration[0]=lastAcceleration[0]-lastGravity[0];
+				lastNetAcceleration[1]=lastAcceleration[1]-lastGravity[1];
+				lastNetAcceleration[2]=lastAcceleration[2]-lastGravity[2];
+				
+				hNetAcceleration.add(lastNetAcceleration);
+		    	if(hNetAcceleration.size()>=WINDOW_SIZE){
+		    		hNetAcceleration.remove(0);
+		    	}
+		    	lastAveragedNetAcceleration=average(hNetAcceleration);
 			}
 	}
 	
@@ -107,13 +106,16 @@ public class SensorGuy implements SensorEventListener{
 
 	
 	public float[] getAcceleration(){
-		return lastAveragedAcceleration;
+		return lastAcceleration;
+	}	
+	public float[] getNetAcceleration(){
+		return lastAveragedNetAcceleration;
 	}
 	public float[] getGravity(){
-		return lastAveragedGravity;
+		return lastGravity;
 	}
 	public float[] getGyroscope(){
-		return lastAveragedGyroscope;
+		return lastGyroscope;
 	}
 
 }
