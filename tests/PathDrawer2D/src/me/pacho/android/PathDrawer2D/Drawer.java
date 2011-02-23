@@ -23,6 +23,7 @@ public class Drawer extends Activity {
     public static SensorGuy getSensorGuy(){
     	return sensorGuy;
     }
+
     
     public static Context getContext() {
 		return CONTEXT;
