@@ -4,8 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<me.pacho.android.PathDrawer2D.RawData android:id="@+id/SurfaceView01" android:layout_width="wrap_content" 
+<me.pacho.android.PathDrawer2D.PathDrawer android:id="@+id/SurfaceView01" android:layout_width="wrap_content" 
 
 android:layout_height="wrap_content" android:maxHeight="40dip">
-</me.pacho.android.PathDrawer2D.RawData>
+</me.pacho.android.PathDrawer2D.PathDrawer>
 </LinearLayout>
