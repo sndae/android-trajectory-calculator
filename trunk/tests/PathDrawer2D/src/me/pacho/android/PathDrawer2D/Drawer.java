@@ -7,8 +7,8 @@ import android.view.KeyEvent;
 
 public class Drawer extends Activity {
 	private static Context CONTEXT;
-	private static SensorGuy sensorGuy;
-	private static RawData rawData;
+	private static PathManager pathManager;
+	private static PathDrawer pathDrawer;
 	
     /** Called when the activity is first created. */
     @Override
@@ -21,10 +21,10 @@ public class Drawer extends Activity {
     @Override
     public void onResume(){
     	super.onResume();
-        sensorGuy=new SensorGuy();
+    	pathManager=new PathManager();
     }
-    public static SensorGuy getSensorGuy(){
-    	return sensorGuy;
+    public static PathManager getPathManager(){
+    	return pathManager;
     }
 
     
@@ -32,8 +32,8 @@ public class Drawer extends Activity {
 		return CONTEXT;
 	}
     
-    static void registerRawData(RawData rd){
-    	 rawData = rd;
+    static void registerRawData(PathDrawer rd){
+    	 pathDrawer = rd;
     }
     
 	@Override
@@ -43,12 +43,12 @@ public class Drawer extends Activity {
 		//84 buscar
 		//25 low vol
 		//24 + vol
-		if(rawData!=null){
+		if(pathDrawer!=null){
 		if(keyCode==KeyEvent.KEYCODE_MENU){
 			//TODO
 		}
 		else if(keyCode==KeyEvent.KEYCODE_BACK){
-			rawData.reset();
+			pathDrawer.reset();
 		}
 		else if(keyCode==KeyEvent.KEYCODE_SEARCH){
 			

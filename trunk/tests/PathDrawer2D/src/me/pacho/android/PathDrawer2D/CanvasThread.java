@@ -9,10 +9,10 @@ import android.view.SurfaceHolder;
  
 public class CanvasThread extends Thread {
     private SurfaceHolder _surfaceHolder;
-    private RawData _panel;
+    private PathDrawer _panel;
     private boolean _run = false;
  
-    public CanvasThread(SurfaceHolder surfaceHolder, RawData panel) {
+    public CanvasThread(SurfaceHolder surfaceHolder, PathDrawer panel) {
         _surfaceHolder = surfaceHolder;
         _panel = panel;
     }
