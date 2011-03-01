@@ -57,7 +57,7 @@ class PathDrawer extends SurfaceView implements SurfaceHolder.Callback {
         screenSize[1]=canvas.getHeight();
         
         Float[] position=pathManager.getLastPosition();
-        float[] nacc=pathManager.lastNetAcceleration;
+        Float[] nacc=pathManager.getAcceleration();
         float[] vel=pathManager.lastLinealVelocity;
         float[] ori=pathManager.lastOrientation;
         /*float[] acceleration=sensorGuy.getAcceleration();        
@@ -81,9 +81,9 @@ class PathDrawer extends SurfaceView implements SurfaceHolder.Callback {
 	        canvas.drawRect(0,0,screenSize[0],100, paint);
 	        paint.setColor(Color.BLACK);
 	        canvas.drawText("Pos: "+ String.format("%.2f", position[0])+","+String.format("%.2f", position[1])+","+ String.format("%.2f", position[2]), 5,20, paint);
-	        canvas.drawText("NACC: "+ String.format("%.2f", nacc[0])+","+String.format("%.2f", nacc[1])+","+nacc[2], 5,40, paint);
-	        canvas.drawText("VEL: "+ String.format("%.2f", vel[0])+","+String.format("%.2f", vel[1])+","+vel[2], 5,60, paint);
-	        canvas.drawText("ORI: "+ String.format("%.2f", ori[0])+","+String.format("%.2f", ori[1])+","+ori[2], 5,80, paint);
+	        canvas.drawText("NACC: "+ String.format("%.2f", nacc[0])+","+String.format("%.2f", nacc[1])+","+String.format("%.2f",nacc[2]), 5,40, paint);
+	        canvas.drawText("VEL: "+ String.format("%.2f", vel[0])+","+String.format("%.2f", vel[1])+","+String.format("%.2f",vel[2]), 5,60, paint);
+	        canvas.drawText("ORI: "+ String.format("%.2f", ori[0])+","+String.format("%.2f", ori[1])+","+String.format("%.2f",ori[2]), 5,80, paint);
 	       /* canvas.drawText("NDT: "+pathManager.nanoDeltaTime, 5,140, paint);
 	        canvas.drawText("TS: "+pathManager.lastTimeStamp+","+pathManager.deltaTime, 5,170, paint);*/
 	        
@@ -96,7 +96,7 @@ class PathDrawer extends SurfaceView implements SurfaceHolder.Callback {
 
 		      //x
 		        paint.setColor(Color.RED);
-		        canvas.drawCircle(position[0]*scale_accel+zero_accel, position[1]*scale_accel+zero_accel,2f, paint);
+		        canvas.drawCircle((screenSize[0]/2)+(position[0]*scale_accel), position[1]*scale_accel+zero_accel,2f, paint);
 		      /*y
 		        paint.setColor(Color.BLUE);
 		        canvas.drawCircle(count, position[1]*scale_accel+zero_accel,2f, paint);
