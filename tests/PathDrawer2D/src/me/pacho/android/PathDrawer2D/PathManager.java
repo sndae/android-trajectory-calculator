@@ -16,6 +16,7 @@ import android.util.Log;
 
 public class PathManager implements SensorEventListener{
 	
+	private static final int WINDOW = 100;
 	SensorManager mSensorManager;
 	ArrayList<Float[]> trajectory;
 	
@@ -25,9 +26,10 @@ public class PathManager implements SensorEventListener{
 	public float[] lastMagnetic={0f,0f,0f};
 	public float[] lastOrientation ={0f,0f,0f};
 	public float[] lastGravity ={0f,0f,0f};
-	public float[] lastNetAcceleration={0f,0f,0f};
+	public Float[] lastNetAcceleration={0f,0f,0f};
 
 	//float[] lastRadialVelocity={0f,0f,0f};
+    private ArrayList<Float[]> hNetAcceleration;
 
     
     private float[] mRotationM = new float[9];               // Use [16] to co-operate with android.opengl.Matrix 
@@ -54,7 +56,8 @@ public class PathManager implements SensorEventListener{
 
         //mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_FASTEST);
 
-        
+        hNetAcceleration=new ArrayList<Float[]>();
+
 	}
 
 	@Override
@@ -102,6 +105,21 @@ public class PathManager implements SensorEventListener{
         }*/
         
 	}
+
+	private void calculateNetAcceleration() {
+		Float[] resp={lastLinealAcceleration[0]-lastGravity[0],lastLinealAcceleration[1]-lastGravity[1],lastLinealAcceleration[2]-lastGravity[2]};
+
+		//CutOff
+		resp[0]=Math.abs(resp[0])>0.05f?resp[0]:0f;
+		resp[1]=Math.abs(resp[1])>0.05f?resp[1]:0f;
+		resp[2]=Math.abs(resp[2])>0.05f?resp[2]:0f;
+		
+		hNetAcceleration.add(resp);
+		if(hNetAcceleration.size()>WINDOW){
+			hNetAcceleration.remove(0);
+		}
+		lastNetAcceleration=average(hNetAcceleration);
+	}
 	
 	private void calculateMovement() {
 		Float[] lastPosition=trajectory.get(trajectory.size()-1);
@@ -133,10 +151,10 @@ public class PathManager implements SensorEventListener{
 		
 	}
 
-	private void calculateNetAcceleration() {
+	/*private void calculateNetAcceleration0() {
 			float[] resp={lastLinealAcceleration[0]-lastGravity[0],lastLinealAcceleration[1]-lastGravity[1],lastLinealAcceleration[2]-lastGravity[2]};
 			copyArray(lastNetAcceleration,resp);
-	}
+	}*/
 
 	private void calculateOrientation(){
         if(SensorManager.getRotationMatrix(mRotationM, null, lastLinealAcceleration, lastMagnetic)){
@@ -159,4 +177,30 @@ public class PathManager implements SensorEventListener{
 	public Float[] getLastPosition(){
 		return trajectory.get(trajectory.size()-1);
 	}
+	
+	public Float[] getLastAcceleration(){
+		int size=hNetAcceleration.size();
+		if(size>0){
+			return hNetAcceleration.get(size-1);
+		}
+		Float[] resp={0f,0f,0f};
+		return resp;
+	}	
+	
+	public Float[] getAcceleration(){
+		return lastNetAcceleration;
+	}	
+	
+    private Float[] average(ArrayList<Float[]> array){
+    	Float[] sum={0f,0f,0f};
+        int n=array.size();
+        for(int i=0;i<array.size();i++){
+        		Float[] actual=array.get(i);
+                sum[0]+=actual[0];
+                sum[1]+=actual[1];
+                sum[2]+=actual[2];
+        }
+        Float[] average={sum[0]/n,sum[1]/n,sum[2]/n};
+        return average;
+}
 }
