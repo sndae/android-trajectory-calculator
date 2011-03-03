@@ -1,0 +1,23 @@
+#!gnuplot
+set term x11
+
+set grid
+set xlabel "X" offset 1,0
+set ylabel "Y" offset 1,0
+set zlabel "Z" offset 1,0
+
+unset autoscale x
+unset autoscale y
+unset autoscale z
+
+set border 4095
+
+
+#Hack to know the max and min value of the time
+max(a,b)=a>b?a:b
+min(a,b)=a<b?a:b 
+maximum=-999999999999999999
+minimum=999999999999999999
+
+
+splot in using 2:3:4 title "x,y,z" with points
