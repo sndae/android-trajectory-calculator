@@ -1,0 +1,143 @@
+#!gnuplot
+
+################################################################################################################
+#TRAJECTORY
+set term png size 1000, 500
+set output in."-t.png"
+set grid
+
+set tmargin 0
+set bmargin 1
+set lmargin 15
+set rmargin 5
+
+set multiplot layout 2,1 title "Trajectory: ".in."\n" scale 1,0.8
+
+
+set style line 1 lt rgb "red" lw 2
+set style line 2 lt rgb "blue" lw 2
+set style line 3 lt rgb "green" lw 2
+set style line 4 lt rgb "orange" lw 2
+set style line 5 lt rgb "cyan" lw 2
+set style line 6 lt rgb "violet" lw 2
+
+
+set xtics
+set mxtics
+set ytics
+set mytics
+
+set ylabel "Position (m)" offset 1,0
+unset xlabel
+
+
+plot in using 1:2 title columnhead with dots ls 1, \
+	in using 1:3 title columnhead with dots ls 2, \
+	in using 1:4 title columnhead with dots ls 3 
+
+set xlabel "Time (s)"
+set ylabel "Orientation (rad)" offset 1,0
+
+plot in using 1:5 title columnhead with dots ls 4, \
+	in using 1:6 title columnhead with dots ls 5, \
+	in using 1:7 title columnhead with dots ls 6
+
+unset multiplot
+
+
+################################################################################################################
+#VEL/ACC/ORI
+set term png size 1000, 750
+set output in."-vao.png"
+set grid x y2
+
+set tmargin 0
+set bmargin 1
+set lmargin 15
+set rmargin 15
+
+set multiplot layout 3,1 title "VEL/ACC/ORI: ".in."\n" scale 1,0.8
+
+
+set style line 1 lt rgb "red" lw 2
+set style line 2 lt rgb "blue" lw 2
+set style line 3 lt rgb "green" lw 2
+
+
+set xtics
+set mxtics
+set ytics
+set y2tics
+set mytics
+
+
+unset xlabel
+set ylabel "m | m/s^2"
+set y2label "rad/s"
+
+set autoscale  y
+set autoscale y2
+
+plot in using 1:5 title columnhead with dots ls 1 axes x1y1, \
+	in using 1:8 title columnhead with dots ls 2 axes x1y1, \
+	in using 1:11 title columnhead with dots ls 3 axes x1y2 
+
+plot in using 1:6 title columnhead with dots ls 1 axes x1y1, \
+	in using 1:9 title columnhead with dots ls 2 axes x1y1, \
+	in using 1:12 title columnhead with dots ls 3 axes x1y2
+
+set xlabel "Time (s)"
+
+plot in using 1:7 title columnhead with dots ls 1 axes x1y1, \
+	in using 1:10 title columnhead with dots ls 2 axes x1y1, \
+	in using 1:13 title columnhead with dots ls 3 axes x1y2
+
+
+unset multiplot
+
+
+#ORI/GYRO
+
+set term png size 1000, 750
+set output in."-og.png"
+set grid x y2
+
+set tmargin 0
+set bmargin 1
+set lmargin 15
+set rmargin 15
+
+set multiplot layout 3,1 title "ORI/GYRO: ".in."\n" scale 1,0.8
+
+
+set style line 1 lt rgb "red" lw 2
+set style line 2 lt rgb "blue" lw 2
+
+
+set xtics
+set mxtics
+set ytics
+set y2tics
+set mytics
+
+
+unset xlabel
+set ylabel "rad"
+set y2label "rad/s"
+
+set autoscale  y
+set autoscale y2
+
+plot in using 1:5 title columnhead with dots ls 1 axes x1y1, \
+	in using 1:14 title columnhead with dots ls 3 axes x1y2
+
+plot in using 1:6 title columnhead with dots ls 1 axes x1y1, \
+	in using 1:15 title columnhead with dots ls 3 axes x1y2
+
+set xlabel "Time (s)"
+
+plot in using 1:7 title columnhead with dots ls 1 axes x1y1, \
+	in using 1:16 title columnhead with dots ls 3 axes x1y2
+
+
+unset multiplot
