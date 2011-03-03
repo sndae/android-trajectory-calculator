@@ -9,13 +9,16 @@ public class Drawer extends Activity {
 	private static Context CONTEXT;
 	private static PathManager pathManager;
 	private static PathDrawer pathDrawer;
-	
+	private static LoggerThread logger;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         CONTEXT=this;
+    	logger=new LoggerThread("data/PathDrawer/", System.nanoTime()+"");
+    	logger.run();
+
     }
     
     @Override
@@ -23,11 +26,18 @@ public class Drawer extends Activity {
     	super.onResume();
     	pathManager=new PathManager();
     }
+    
+    public void onDestroy(){
+    	super.onDestroy();
+    	logger.closeLog();
+    }
     public static PathManager getPathManager(){
     	return pathManager;
     }
 
-    
+    public static LoggerThread getLogger(){
+    	return logger;
+    }
     public static Context getContext() {
 		return CONTEXT;
 	}
